@@ -1,0 +1,106 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+
+    @using (Html.BeginForm("Index", "Home", new { cid = "" }, FormMethod.Post, new { id = "frmIngSearch" }))
+    {
+        <div class="input-group">
+
+            @Html.DropDownList("IngredientId", (MultiSelectList)ViewBag.Ingredients, new { @class = "form-control select2", Id= "reset", multiple = "multiple", data_placeholder = "Lütfen malzemeleri seçiniz..." })
+
+            <span class="input-group-append">
+                <button class="btn btn-secondary" type="submit">Go!</button>
+            </span>
+        </div>
+    }
+</div>
+
+<hr />
+
+<h1 style="color: #F8F9FA">
+    @if (Model.SearchTerm != null)
+    {
+        <text>
+            Search Results for &quot;@Model.SearchTerm &quot;
+        </text>
+    }
+    else
+    {
+        @(Model.Category == null ? "My Recipes" : $"Recipes in \" { Model.Category.CategoryName}")
+        @Html.ActionLink("Yönetim", "Index", "Dashboard", new { area = "Admin" }, null)
+    }
+</h1>
+
+@if (Model.Recipes.Any() && Model.SearchTerm != null)
+{
+    <p>No results found!</p>
+}
+
+@foreach (var recipe in Model.Recipes)
+{
+    <!-- Blog Post -->
+    <div class="card mb-4 blog-recipe">
+        @if (!string.IsNullOrEmpty(recipe.PhotoPath))
+        {
+            <img class="card-img-top" src="@Url.FeaturedImage(recipe.PhotoPath)" />
+        }
+        <img class="card-img-top" src="https://placehold.it/750x100" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">@recipe.Title</h2>
+            <div class="blog-recipe-content">
+
+            </div>
+            <a href="@Url.Action("Show", "Recipe", new { id = recipe.Id, slug = recipe.Slug })" class="btn btn-primary mt-3">Read More &rarr;</a>
+        </div>
+        <div class="card-footer text-muted clearfix">
+            <div class="float-right">
+                @{ var commentCount = recipe.Comments.Count(x => x.State == CommentState.Approved);}
+                <i class="fas fa-comments"></i>
+                <span class="colorWheat">
+                    <a href="@Url.Action("Show", "Recipe", new { id = recipe.Id, slug = recipe.Slug })#comments">
+                        @commentCount Comment@(commentCount != 1 ? "s" : "")
+                    </a>
+                </span>
+            </div>
+            <span class="colorWheat">
+                Posted on @recipe.CreationTime.Value.ToShortDateString() by
+                <a href="#">@(recipe.Author.DisplayName ?? "Anonymous")</a>
+            </span>
+        </div>
+    </div>
+}
+
+
+<nav aria-label="Page Number and Pagination">
+    <div class="mb-3 text-center">
+        Page @(Model.Recipes.PageCount < Model.Recipes.PageNumber ? 0 : Model.Recipes.PageNumber) of @Model.Recipes.PageCount
+    </div>
+    @Html.PagedListPager(Model.Recipes, page => Url.Action("Index",
+        new { page, q = Model.SearchTerm }), new PagedListRenderOptionsBase
+            {
+            ContainerDivClasses = new string[] { "pagination-container", "d-flex" },
+            UlElementClasses = new string[] { "pagination", "mx-auto" },
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            EllipsesElementClass = "page-link",
+            LinkToFirstPageFormat = "&laquo;",
+            LinkToLastPageFormat = "&raquo;",
+            LinkToPreviousPageFormat = "&lsaquo;",
+            LinkToNextPageFormat = "&rsaquo;",
+            MaximumPageNumbersToDisplay = 5,
+        })
+</nav>
+
+@section scripts {
+    <script>
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    </script>
+}

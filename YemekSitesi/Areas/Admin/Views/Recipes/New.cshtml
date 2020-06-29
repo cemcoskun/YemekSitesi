@@ -1,0 +1,102 @@
+﻿@model NewRecipeViewModel
+@{
+    ViewBag.Title = "New Recipe";
+}
+
+@using (Html.BeginForm("New", "Recipes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Create a New Post</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", placeholder = "Title:" })
+                        @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.DropDownListFor(x => x.CategoryId, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.CategoryId, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @*@Html.TextAreaFor(x => x.Content, new { @class = "form-control", data_snote = "true" })
+        @Html.ValidationMessageFor(x => x.Content, null, new { @class = "text-danger" })*@
+                        @Html.DropDownList("IngredientId", (MultiSelectList)ViewBag.Ingredients, new { @class = "form-control select2", multiple = "multiple", data_placeholder = "Lütfen malzemeleri seçiniz..." })
+
+                        @*<input list="browsers" type="text" multiple>
+                <datalist id="browsers">
+                    @foreach (var item in (x => x.Ingredients))
+        {
+
+        }
+                <option value="Internet Explorer">
+                <option value="Firefox">
+                <option value="Chrome">
+                <option value="Opera">
+                <option value="Safari">
+                    </datalist>*@
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <label>Tarifin yapılış adımlarını, aralarına virgül koyarak ve her bir adımı enter tuşu ile boşluk bırakarak aşağıya sırayla yazınız.</label>
+                    @Html.TextAreaFor(x => x.Directions, new { @class = "form-control", data_snote = "true" })
+                    @Html.ValidationMessageFor(x => x.Directions, null, new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-inline my-1">
+                    <label for="exampleInputFile">Featured Image</label>
+                    <div class="input-group flex-fill ml-2">
+                        <div class="custom-file">
+                            <label class="custom-file-label justify-content-start" for="exampleInputFile">Choose file</label>
+                            <input type="file" name="FeaturedImage" class="custom-file-input" id="exampleInputFile">
+                        </div>
+                    </div>
+                    @Html.ValidationMessage("FeaturedImage", null, new { @class = "text-danger ml-2" })
+                </div>
+                <div class="col-md-6 form-inline align-content-start my-1">
+                    @Html.LabelFor(x => x.Slug)
+                    @Html.TextBoxFor(x => x.Slug, new { @class = "form-control flex-fill ml-2", placeholder = "a-sample-url" })
+                    <a id="refreshSlug" href="#" class="mx-1 text-secondary"><i class="fas fa-sync-alt"></i></a>
+                    @Html.ValidationMessageFor(x => x.Slug, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <div class="float-left">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+            <!-- /.card-footer -->
+        </div>
+    <!-- /.card -->
+}
+
+@section scripts {
+    <script>
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        slug.run("#Title", "#Slug", "#refreshSlug");
+
+    </script>
+}

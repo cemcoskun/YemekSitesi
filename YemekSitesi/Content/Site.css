@@ -1,0 +1,59 @@
+﻿body {
+    background-image: linear-gradient(#3a4660, #e6dbc9);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 56px;
+}
+
+#bonAppetite {
+    font-size: 80px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Arial, sans-serif
+}
+
+.blog-recipe {
+    color: #F8F9FA;
+    background-color: #4f5f76;
+}
+
+.blog-recipe .colorWheat {
+    color: wheat;
+}
+
+.blog-recipe a {
+    color: #e6dbc9;
+}
+
+.blog-recipe img {
+    max-width: 100%;
+}
+
+.blog-recipe-content {
+    position: relative;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+    .blog-recipe-content.long-text::after {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        height: 3rem;
+        width: 100%;
+        background-image: linear-gradient(to bottom, transparent, white);
+    }
+
+.show-recipe img {
+    max-width: 100%;
+}
+
+.cropper-wrapper {
+    width: 100%;
+    height: 300px;
+    padding-bottom: 55px;
+    background-color: #f0f0f0;
+}
+
+input[type = "text"], input[type = "password"] {
+    max-width: 280px;
+}
