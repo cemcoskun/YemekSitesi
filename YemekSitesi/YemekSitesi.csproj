@@ -1926,6 +1926,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <None Include="AppSettingsSecrets.config" />
+    <None Include="ConnectionStrings.config" />
     <Content Include="Images\food-background.jpg" />
     <Content Include="Images\profile.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
